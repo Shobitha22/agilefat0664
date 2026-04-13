@@ -1,43 +1,44 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_HUB_REPO = "your-username/matrix-app"
-        DOCKER_CRED_ID = "docker-hub-credentials" // ID set in Jenkins Manage Credentials
-    }
+
     stages {
         stage('Checkout') {
             steps {
-                // Pulls code from your GitHub repository
-                git 'https://github.com'
+                git branch: 'main', url: 'https://github.com/Shobitha22/agilefat0664.git'
             }
         }
-        stage('Test') {
-            steps {
-                // Runs JUnit tests via Maven
-                sh 'mvn test'
-            }
-        }
+
         stage('Build') {
             steps {
-                // Compiles and packages the JAR
-                sh 'mvn clean package'
+                bat 'mvn clean compile'
             }
         }
-        stage('Docker Build') {
+
+        stage('Test') {
             steps {
-                // Creates Docker image using the Dockerfile in root
-                sh "docker build -t ${DOCKER_HUB_REPO}:latest ."
+                bat 'mvn test'
             }
         }
-        stage('Push to Docker Hub') {
+
+        stage('Package') {
             steps {
-                // Pushes image to Docker Hub
-                script {
-                    docker.withRegistry('', DOCKER_CRED_ID) {
-                        sh "docker push ${DOCKER_HUB_REPO}:latest"
-                    }
-                }
+                bat 'mvn package'
             }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t agilefat0664 .'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'CI pipeline completed successfully'
+        }
+        failure {
+            echo 'CI pipeline failed'
         }
     }
 }
