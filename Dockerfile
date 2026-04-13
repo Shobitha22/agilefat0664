@@ -1,10 +1,4 @@
-
-FROM maven:3.8.1-openjdk-11 AS build
-COPY . /app
+FROM eclipse-temurin:17-jre
 WORKDIR /app
-RUN mvn clean package
-
-
-FROM openjdk:11-jre-slim
-COPY --from=build /app/target/MatrixApp-1.0-SNAPSHOT.jar /app.jar
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+COPY target/agile-lab-maven-1.0-SNAPSHOT.jar app.jar
+CMD ["java", "-jar", "app.jar"]
