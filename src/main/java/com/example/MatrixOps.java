@@ -1,4 +1,4 @@
-package com.example;
+package main.java.com.example;
 
 public class MatrixOps {
     public static int[][] multiply(int[][] A, int[][] B) {
@@ -6,6 +6,8 @@ public class MatrixOps {
         int colsA = A[0].length;
         int rowsB = B.length;
         int colsB = B[0].length;
+
+        System.err.println("Matrix Multiplication");
 
         // Condition for multiplication: columns of A must equal rows of B
         if (colsA != rowsB) {
