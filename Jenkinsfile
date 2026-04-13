@@ -31,6 +31,12 @@ pipeline {
                 bat 'docker build -t agilefat0664 .'
             }
         }
+        
+        stage('Run Docker Container') {
+            steps {
+                bat 'docker run -d -p 8091:80 agilefat0664'
+                }
+        }
     }
 
     post {
